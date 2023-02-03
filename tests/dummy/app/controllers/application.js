@@ -2,7 +2,7 @@ import { later } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import Controller from '@ember/controller';
 import FSM from 'ember-fsm';
-import { set } from '@ember/object';
+import { action, set } from '@ember/object';
 
 const WAIT_TIMES = {
   'red':   5000,
@@ -46,19 +46,17 @@ export default Controller.extend(FSM.Stateful, {
     this._super(...arguments);
   },
 
-  actions: {
-    powerUp() {
-      this.sendStateEvent('cycle');
-    },
+  powerUp: action(function () {
+    this.sendStateEvent('cycle');
+  }),
 
-    powerDown() {
-      if (this.get('isInOff')) {
-        return;
-      }
-
-      this.set('doPowerDown', true);
+  powerDown: action(function () {
+    if (this.isInOff) {
+      return;
     }
-  },
+
+    this.set('doPowerDown', true);
+  }),
 
   didPowerOff() {
     this.set('doPowerDown', false);
@@ -77,12 +75,12 @@ export default Controller.extend(FSM.Stateful, {
   },
 
   colorChanged(transition) {
-    let ms = WAIT_TIMES[this.get('fsmCurrentState')];
+    let ms = WAIT_TIMES[this.fsmCurrentState];
 
     this.log('change', `${transition.fromState} -> ${transition.toState}`);
 
     return this.sleep(ms).then(() => {
-      if (this.get('doPowerDown')) {
+      if (this.doPowerDown) {
         this.sendStateEvent('powerDown');
       } else {
         this.sendStateEvent('cycle');
@@ -99,9 +97,9 @@ export default Controller.extend(FSM.Stateful, {
   },
 
   log(level, message) {
-    this.get('model.messages').pushObject({
+    this.model.get('messages').pushObject({
       level: level,
-      message: message
+      message: message,
     });
   }
 });

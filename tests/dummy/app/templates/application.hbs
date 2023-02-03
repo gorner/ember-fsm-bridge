@@ -2,29 +2,29 @@
 
 <section class="signal">
   <ol>
-    <li class="{{if isInRed "red"}}">l</li>
-    <li class="{{if isInAmber "amber"}}">l</li>
-    <li class="{{if isInGreen "green"}}">l</li>
+    <li class="{{if this.isInRed "red"}}">l</li>
+    <li class="{{if this.isInAmber "amber"}}">l</li>
+    <li class="{{if this.isInGreen "green"}}">l</li>
   </ol>
 </section>
 
 <fieldset>
   <legend>Control Panel</legend>
 
-  {{#unless isInOff}}
-    {{#if doPowerDown}}
+  {{#if this.isInOff}}
+    <button type="button" {{on "click" this.powerUp}} disabled={{this.isLoading}}>Turn On</button>
+  {{else}}
+    {{#if this.doPowerDown}}
       <em>Please wait.</em>
     {{else}}
-      <button {{action "powerDown"}}>Turn Off</button>
+      <button type="button" {{on "click" this.powerDown}}>Turn Off</button>
     {{/if}}
-  {{else}}
-    <button {{action "powerUp"}} disabled={{isLoading}}>Turn On</button>
-  {{/unless}}
+  {{/if}}
 </fieldset>
 
 <section class="log">
   <ol>
-    {{#each model.messages as |item|}}
+    {{#each this.model.messages as |item|}}
       <li class="{{item.level}}">
         <span class="level">[{{item.level}}]</span>
         <span class="message">{{item.message}}</span>

@@ -2,6 +2,7 @@ import { reads } from '@ember/object/computed';
 import Mixin from '@ember/object/mixin';
 import Machine from './-machine';
 
+/* eslint-disable-next-line ember/no-new-mixins */
 export default Mixin.create({
   fsmEvents:       null,
   fsmStates:       null,
@@ -16,9 +17,9 @@ export default Mixin.create({
     let fsm;
 
     params.target = this;
-    params.events = this.get('fsmEvents');
-    params.states = this.get('fsmStates');
-    params.initialState = this.get('fsmInitialState');
+    params.events = this.fsmEvents;
+    params.states = this.fsmStates;
+    params.initialState = this.fsmInitialState;
 
     fsm = Machine.create(params);
 
@@ -33,7 +34,7 @@ export default Mixin.create({
   },
 
   sendStateEvent() {
-    let fsm = this.get('__fsm__');
+    let fsm = this.__fsm__;
     return fsm.send.apply(fsm, arguments);
   }
 });

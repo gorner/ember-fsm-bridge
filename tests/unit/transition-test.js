@@ -25,6 +25,8 @@ module('Unit: ember-fsm/-transition - initialization', function(hooks) {
 
 module('Unit: ember-fsm/-transition - callbacksFor', function() {
   test('returns all known callbacks for given transition event type', function(assert) {
+    assert.expect(5);
+
     let fsm         = createCallbackMachine({ states: { initialState: 'okay' } });
     let t           = fsm.transitionFor('cuddleKitty');
     let didEnterCbs = t.callbacksFor('didEnter');
@@ -52,6 +54,8 @@ module('Unit: ember-fsm/-transition - callbacksFor', function() {
 
 module('Unit: ember-fsm/-transition - callback', function() {
   test('merges callbacks into one promise and tracks resolutions in the transition', function(assert) {
+    assert.expect(4);
+
     let done = assert.async();
 
     let animateSmile = sinon.spy(() => {
@@ -87,6 +91,8 @@ module('Unit: ember-fsm/-transition - callback', function() {
 
 module('Unit: ember-fsm/-transition - inline callback', function() {
   test('merges all callbacks into one promise for the entire transition event and tracks resolutions in the transition', function(assert) {
+    assert.expect(2);
+
     let done = assert.async();
 
     let animateSmile = sinon.spy(() => {
@@ -126,6 +132,8 @@ module('Unit: ember-fsm/-transition - perform', function(hooks) {
   });
 
   test('returns a promise that is resolved when all callbacks resolve', function(assert) {
+    assert.expect(1);
+
     let done = assert.async();
 
     let fsm = createCallbackMachine({
@@ -142,6 +150,8 @@ module('Unit: ember-fsm/-transition - perform', function(hooks) {
   });
 
   test('returns a promise that is rejected when a callback rejects', function(assert) {
+    assert.expect(3);
+
     let done = assert.async();
 
     let fsm = createCallbackMachine({
@@ -170,6 +180,8 @@ module('Unit: ember-fsm/-transition - isResolving', function() {
   });
 
   test('is false after the transition resolves', function(assert) {
+    assert.expect(1);
+
     let done = assert.async();
 
     let fsm = createCallbackMachine({
@@ -186,6 +198,8 @@ module('Unit: ember-fsm/-transition - isResolving', function() {
   });
 
   test('is true while transition resolves', function(assert) {
+    assert.expect(2);
+
     let done = assert.async();
     let promise;
     let resolver;
@@ -208,11 +222,11 @@ module('Unit: ember-fsm/-transition - isResolving', function() {
     t.perform();
 
     next(() => {
-      assert.strictEqual(t.get('isResolving'), true);
+      assert.true(t.get('isResolving'));
       resolver();
 
       next(() => {
-        assert.strictEqual(t.get('isResolving'), false);
+        assert.false(t.get('isResolving'));
         done();
       });
     });
@@ -243,22 +257,26 @@ module('Unit: ember-fsm/-transition - isRejected', function(hooks) {
   });
 
   test('is true after the transition rejects', function(assert) {
+    assert.expect(1);
+
     let done = assert.async();
 
     this.t.perform().catch(() => {
-      assert.strictEqual(this.t.get('isRejected'), true);
+      assert.true(this.t.get('isRejected'));
       done();
     });
   });
 
   test('is false if the transition resolves', function(assert) {
+    assert.expect(1);
+
     let done = assert.async();
     this.fsm.set('currentState', 'happy');
     let t = this.fsm.transitionFor('cuddleKitty');
 
     t.perform().then(() => {
       next(() => {
-        assert.strictEqual(t.get('isRejected'), false);
+        assert.false(t.get('isRejected'));
         done();
       });
     });

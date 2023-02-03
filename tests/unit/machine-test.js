@@ -13,6 +13,8 @@ import {
 
 module('Unit: ember-fsm/-machine - create', function() {
   test('adds a default error event and finished state if none is provided', function(assert) {
+    assert.expect(4);
+
     let fsm = createMachine({
       events: {
         one: { transitions: { initialized: 'a' } }
@@ -26,6 +28,8 @@ module('Unit: ember-fsm/-machine - create', function() {
   });
 
   test('does not add default error event if one is provided by the user', function(assert) {
+    assert.expect(1);
+
     let fsm = createMachine({
       events: {
         one: { transition: { initialized: 'a' } },
@@ -37,6 +41,8 @@ module('Unit: ember-fsm/-machine - create', function() {
   });
 
   test('sets the currentState to the initialState', function(assert) {
+    assert.expect(1);
+
     let fsm = createMachine({
       states: { initialState: 'ready' },
       events: { one: { transition: { ready: 'a' } } }
@@ -61,6 +67,8 @@ module('Unit: ember-fsm/-machine - create', function() {
   });
 
   test('does not destruct original definition', function(assert) {
+    assert.expect(2);
+
     const states = { initialState: 'one' };
     const events = {
       next: { transition: { one: 'two' } }
@@ -78,14 +86,18 @@ module('Unit: ember-fsm/-machine - create', function() {
 
 module('Unit: ember-fsm/-machine - transitionFor', function() {
   test('selects a transition based off the current state', function(assert) {
+    assert.expect(2);
+
     let fsm = createBasicMachine();
-    let t   = fsm.transitionFor('run');
+    let t = fsm.transitionFor('run');
 
     assert.strictEqual(t.constructor, Transition);
     assert.strictEqual(t.toState, 'active.running');
   });
 
   test('considers guards when selecting a transition', function(assert) {
+    assert.expect(3);
+
     let fsm = createBasicMachine({
       states: {
         initialState: 'active.running'
@@ -112,6 +124,8 @@ module('Unit: ember-fsm/-machine - inState', function() {
   });
 
   test('returns true for namespace match', function(assert) {
+    assert.expect(4);
+
     let fsm = createBasicMachine({
       states: { initialState: 'active.running' }
     });
@@ -130,49 +144,57 @@ module('Unit: ember-fsm/-machine - inState', function() {
 
 module('Unit: ember-fsm/-machine - isIn{{stateName}} accessors', function() {
   test('returns true if it matches the current state', function(assert) {
+    assert.expect(3);
+
     let fsm = createBasicMachine();
 
     assert.strictEqual(fsm.get('currentState'), 'inactive');
-    assert.strictEqual(fsm.get('isInInactive'), true);
-    assert.strictEqual(fsm.get('isInActiveRunning'), false);
+    assert.true(fsm.get('isInInactive'));
+    assert.false(fsm.get('isInActiveRunning'));
   });
 
   test('returns true if it matches the current state namespace', function(assert) {
+    assert.expect(4);
+
     let fsm = createBasicMachine();
 
     fsm.set('currentState', 'active.running');
 
     assert.strictEqual(fsm.get('currentState'), 'active.running');
-    assert.strictEqual(fsm.get('isInActive'), true);
-    assert.strictEqual(fsm.get('isInActiveRunning'), true);
-    assert.strictEqual(fsm.get('isInInactive'), false);
+    assert.true(fsm.get('isInActive'));
+    assert.true(fsm.get('isInActiveRunning'));
+    assert.false(fsm.get('isInInactive'));
   });
 
   test('is invalidated when the current state changes', function(assert) {
+    assert.expect(3);
+
     let fsm = createBasicMachine();
-    assert.strictEqual(fsm.get('isInInactive'), true);
+    assert.true(fsm.get('isInInactive'));
 
     fsm.set('currentState', 'active.running');
-    assert.strictEqual(fsm.get('isInInactive'), false);
+    assert.false(fsm.get('isInInactive'));
 
     fsm.set('currentState', 'inactive');
-    assert.strictEqual(fsm.get('isInInactive'), true);
+    assert.true(fsm.get('isInInactive'));
   });
 });
 
 module('Unit: ember-fsm/-machine - canEnterState', function() {
   test('returns true if the requested state can be entered from the current state on any event', function(assert) {
+    assert.expect(4);
+
     let fsm = createBasicMachine();
 
     assert.strictEqual(fsm.get('currentState'), 'inactive');
 
-    assert.strictEqual(fsm.canEnterState('active.running'), true);
-    assert.strictEqual(fsm.canEnterState('injured'), false);
+    assert.true(fsm.canEnterState('active.running'));
+    assert.false(fsm.canEnterState('injured'));
 
     fsm.set('currentState', 'active.running');
     fsm.set('atMaxSpeed', true);
 
-    assert.strictEqual(fsm.canEnterState('injured'), true);
+    assert.true(fsm.canEnterState('injured'));
   });
 });
 
@@ -264,6 +286,8 @@ module('Unit: ember-fsm/-machine - send', function(hooks) {
   });
 
   test('runs the transition and all related callbacks', function(assert) {
+    assert.expect(10);
+
     let done = assert.async();
 
     assert.strictEqual(this.fsm.get('currentState'), 'stopped');
@@ -294,6 +318,8 @@ module('Unit: ember-fsm/-machine - send', function(hooks) {
   });
 
   test('captures results in the transition', function(assert) {
+    assert.expect(3);
+
     let done = assert.async();
 
     this.fsm.send('start').then((t) => {
@@ -309,9 +335,11 @@ module('Unit: ember-fsm/-machine - send', function(hooks) {
   });
 
   test('rejects when a callback fails', function(assert) {
+    assert.expect(9);
+
     let done = assert.async();
 
-    assert.strictEqual(this.fsm.get('isTransitioning'), false);
+    assert.false(this.fsm.get('isTransitioning'));
     assert.strictEqual(this.fsm.get('activeTransitions.length'), 0);
 
     this.fsm.set('currentState', 'running');
@@ -325,7 +353,7 @@ module('Unit: ember-fsm/-machine - send', function(hooks) {
         assert.strictEqual(args.transition.get('fromState'), 'running');
         assert.strictEqual(args.transition.get('toState'), 'running');
         assert.strictEqual(args.transition.get('rejection'), 'overheated');
-        assert.strictEqual(this.fsm.get('isTransitioning'), false);
+        assert.false(this.fsm.get('isTransitioning'));
         assert.strictEqual(this.fsm.get('currentState'), 'failed');
 
         done();
@@ -387,25 +415,27 @@ module('Unit: ember-fsm/-machine - transition activation', function(hooks) {
 
 
   test('does not activate while resolving before', function(assert) {
+    assert.expect(5);
+
     let done = assert.async();
 
-    assert.strictEqual(this.fsm.get('isTransitioning'), false);
+    assert.false(this.fsm.get('isTransitioning'));
     this.fsm.send('next');
 
     next(() => {
-      assert.strictEqual(this.fsm.get('isTransitioning'), false);
+      assert.false(this.fsm.get('isTransitioning'));
       this.beforeResolver();
 
       next(() => {
-        assert.strictEqual(this.fsm.get('isTransitioning'), true);
+        assert.true(this.fsm.get('isTransitioning'));
         this.enterResolver();
 
         next(() => {
-          assert.strictEqual(this.fsm.get('isTransitioning'), false);
+          assert.false(this.fsm.get('isTransitioning'));
           this.afterResolver();
 
           next(() => {
-            assert.strictEqual(this.fsm.get('isTransitioning'), false);
+            assert.false(this.fsm.get('isTransitioning'));
             done();
           });
         });
@@ -445,25 +475,29 @@ module('Unit: ember-fsm/-machine - send (while active)', function(hooks) {
   });
 
   test('allows transitions to the same state', function(assert) {
+    assert.expect(3);
+
     let done = assert.async();
 
     this.fsm.pushActiveTransition('t0');
 
-    assert.strictEqual(this.fsm.get('isTransitioning'), true);
+    assert.true(this.fsm.get('isTransitioning'));
     assert.strictEqual(this.fsm.get('currentState'), 'one');
 
     this.fsm.send('stay').then(() => {
       next(() => {
-        assert.strictEqual(this.fsm.get('isTransitioning'), true);
+        assert.true(this.fsm.get('isTransitioning'));
         done();
       });
     });
   });
 
   test('does not allow transitions to other states', function(assert) {
+    assert.expect(3);
+
     this.fsm.pushActiveTransition('t0');
 
-    assert.strictEqual(this.fsm.get('isTransitioning'), true);
+    assert.true(this.fsm.get('isTransitioning'));
     assert.strictEqual(this.fsm.get('currentState'), 'one');
 
     assert.throws(() => {

@@ -42,7 +42,7 @@
   "dependencies": {
     "ember-cli-babel": "^7.26.10",
     "ember-cli-htmlbars": "^5.7.2",
-    "ember-copy": "1.0.0"
+    "ember-copy": "^2.0.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",

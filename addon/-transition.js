@@ -89,9 +89,9 @@ export default EmberObject.extend({
 
   callbacksFor(transitionEvent) {
     let callbacks = [];
-    let machine   = this.get('machine');
+    let machine   = this.machine;
     let def       = machine.definition;
-    let target    = this.get('target');
+    let target    = this.target;
     let sources   = [this];
     let sourceCallbackNames;
     let extSource;
@@ -148,7 +148,7 @@ export default EmberObject.extend({
 
     let promiseCallback = (fn) => {
       return withPromise(() => {
-        if (this.get('isAborted')) {
+        if (this.isAborted) {
           return 'aborted';
         } else {
           return fn(this);
@@ -158,7 +158,7 @@ export default EmberObject.extend({
 
     let callbackPromiseResolver = (cb) => {
       return (result) => {
-        let resolutions = this.get('resolutions');
+        let resolutions = this.resolutions;
 
         if (!resolutions[name]) {
           resolutions[name] = {};
@@ -170,7 +170,7 @@ export default EmberObject.extend({
 
     let callbackPromiseRejector = (cb) => {
       return (error) => {
-        let rejections = this.get('rejections');
+        let rejections = this.rejections;
 
         if (!rejections[name]) {
           rejections[name] = {};
@@ -184,7 +184,7 @@ export default EmberObject.extend({
 
     // Shortcut internal callbacks
     if (name[0] === '_') {
-      return resolve(this.get('machine')[name](this));
+      return resolve(this.machine[name](this));
     }
 
     callbacks = this.callbacksFor(name);
@@ -207,12 +207,12 @@ export default EmberObject.extend({
   toString() {
     return (
       'Transition {\n' +
-      `  event: ${this.get('event')},\n` +
-      `  eventArgs: ${inspect(this.get('eventArgs'))},\n` +
-      `  fromState: ${inspect(this.get('fromState'))},\n` +
-      `  toState: ${inspect(this.get('toState'))},\n` +
-      `  isResolved: ${this.get('isResolved')},\n` +
-      `  isRejected: ${this.get('isRejected')}\n` +
+      `  event: ${this.event},\n` +
+      `  eventArgs: ${inspect(this.eventArgs)},\n` +
+      `  fromState: ${inspect(this.fromState)},\n` +
+      `  toState: ${inspect(this.toState)},\n` +
+      `  isResolved: ${this.isResolved},\n` +
+      `  isRejected: ${this.isRejected}\n` +
       '}'
     );
   }

@@ -17,9 +17,9 @@ export default EmberObject.extend({
   initialState:      null,
 
   init() {
-    let target = this.get('target');
-    let events = this.get('events');
-    let states = this.get('states');
+    let target = this.target;
+    let events = this.events;
+    let states = this.states;
 
     if (!target) {
       this.set('target', this);
@@ -38,7 +38,7 @@ export default EmberObject.extend({
 
     this.set('stateNames',   this.definition.stateNames);
     this.set('eventNames',   this.definition.eventNames);
-    this.set('currentState', this.get('initialState') || this.definition.initialState);
+    this.set('currentState', this.initialState || this.definition.initialState);
   },
 
   send(event) {
@@ -48,21 +48,21 @@ export default EmberObject.extend({
     let promise;
     let sameState;
 
-    if (!contains(this.get('eventNames'), event)) {
+    if (!contains(this.eventNames, event)) {
       throw new EmberError(
         `unknown state event "${event}" try one of [` +
-        this.get('eventNames').join(', ') + ']'
+        this.eventNames.join(', ') + ']'
       );
     }
 
     transition = this.transitionFor(event, args);
-    sameState  = transition.toState === this.get('currentState');
+    sameState  = transition.toState === this.currentState;
 
-    if (this.get('isTransitioning') && !sameState) {
+    if (this.isTransitioning && !sameState) {
       throw new EmberError(
-        `unable to transition out of "${this.get('currentState')}" ` +
+        `unable to transition out of "${this.currentState}" ` +
         `state to "${transition.toState}" state while transitions are ` +
-        `active: ${inspect(this.get('activeTransitions'))}`
+        `active: ${inspect(this.activeTransitions)}`
       );
     }
 
@@ -87,11 +87,11 @@ export default EmberObject.extend({
   },
 
   hasActiveTransition(transition) {
-    return contains(this.get('activeTransitions'), transition);
+    return contains(this.activeTransitions, transition);
   },
 
   abortActiveTransitions() {
-    let activeTransitions = this.get('activeTransitions');
+    let activeTransitions = this.activeTransitions;
 
     while (activeTransitions.length) {
       activeTransitions.popObject().abort();
@@ -101,7 +101,7 @@ export default EmberObject.extend({
   },
 
   pushActiveTransition(transition) {
-    let activeTransitions = this.get('activeTransitions');
+    let activeTransitions = this.activeTransitions;
 
     activeTransitions.pushObject(transition);
 
@@ -111,7 +111,7 @@ export default EmberObject.extend({
   },
 
   removeActiveTransition(transition) {
-    let activeTransitions = this.get('activeTransitions');
+    let activeTransitions = this.activeTransitions;
 
     activeTransitions.removeObject(transition);
 
@@ -121,7 +121,7 @@ export default EmberObject.extend({
   },
 
   checkGuard(guardProperty, isInverse) {
-    let target     = this.get('target');
+    let target     = this.target;
     let guardValue = target.get(guardProperty);
     let result;
 
@@ -138,7 +138,7 @@ export default EmberObject.extend({
   },
 
   outcomeOfPotentialTransitions(potentials) {
-    let target = this.get('target');
+    let target = this.target;
     let potential;
     let outcomeParams;
     let i;
@@ -177,7 +177,7 @@ export default EmberObject.extend({
   },
 
   transitionFor(event, args) {
-    let currentState = this.get('currentState');
+    let currentState = this.currentState;
     let potentials   = this.definition.transitionsFor(event, currentState);
     let transitionParams;
 
@@ -199,14 +199,14 @@ export default EmberObject.extend({
   },
 
   inState(stateOrPrefix) {
-    let currentState = this.definition.lookupState(this.get('currentState'));
+    let currentState = this.definition.lookupState(this.currentState);
     let states       = this.definition.lookupStates(stateOrPrefix);
 
     return contains(states, currentState);
   },
 
   canEnterState(state) {
-    let currentState = this.definition.lookupState(this.get('currentState'));
+    let currentState = this.definition.lookupState(this.currentState);
     let potentials;
 
     potentials = currentState.exitTransitions.filter(function(t) {
@@ -240,9 +240,9 @@ export default EmberObject.extend({
 
       properties.push(property);
 
-      mixin[property] = computed(function() {
+      mixin[property] = computed('currentState', function() {
         return this.inState(prefix);
-      }).property('currentState');
+      });
     }
 
     for (i = 0; i < this.definition.stateNames.length; i++) {
