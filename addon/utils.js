@@ -102,3 +102,15 @@ export function bind(target, fn) {
 export function contains(array, item) {
   return array.indexOf(item) >= 0;
 }
+
+export default {
+  isThenable,
+  capitalCamelize,
+  toArray,
+  withPromise,
+  ownPropertiesOf,
+  isObject,
+  getFirst,
+  bind,
+  contains
+};
