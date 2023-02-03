@@ -4,7 +4,22 @@
 
 **Maintenance Mode**
 
-Ember FSM was a lot of fun to develop 4 years ago when this all made a lot of sense to me, it's still used in some places and I will continue to maintain it to prevent apps from breaking. If you think the Ember community still needs a library like this with newer/better features please fork it and I will let people know where to go! Thanks for understanding :slightly_smiling_face:
+This addon was developed from 2014 to 2018 by
+[Carsten Nielsen](https://www.dignitymemorial.com/obituaries/dundas-on/carsten-nielsen-8730324)
+and was minimally updated in 2023 by the team at @Crowdmark in order to
+ensure compatibility with Ember Octane / 4.x. To comply with SemVer
+best practices we've bumped the major version to 2.x but there are
+no other changes to the feature set.
+
+We do not intend to add any new features and can't make
+any guarantees about future maintenance.
+If you think the Ember community still needs a library
+like this with newer/better features, please feel free to
+fork it and develop it further.
+
+We can only recommend this version for use with Ember 3.28+ and
+Node 14, 16, or 18+. If you need a version compatible with earlier
+versions of Ember, we recommend version 1.1.0.
 
 :warning: :warning: :warning:
 
