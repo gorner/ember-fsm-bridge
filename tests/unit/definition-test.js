@@ -1,4 +1,4 @@
-import { Definition } from 'ember-fsm';
+import { Definition } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 function create(args) {
@@ -14,6 +14,8 @@ function build(transitions) {
 
 module('Unit: ember-fsm/-definition', function() {
   test('Instantiation', function(assert) {
+    assert.expect(6);
+
     assert.throws(function() {
       Definition({ events: {} }); // jshint ignore:line
     }, TypeError, 'requires new operator be used');
@@ -46,6 +48,8 @@ module('Unit: ember-fsm/-definition', function() {
   });
 
   test('Explicitly defined states', function(assert) {
+    assert.expect(2);
+
     assert.throws(function() {
       create({
         states: {
@@ -82,6 +86,8 @@ module('Unit: ember-fsm/-definition', function() {
 
 module('Unit: ember-fsm/-definition - compilation', function() {
   test('state callbacks', function(assert) {
+    assert.expect(2);
+
     let def = create({
       states: {
         initialized: {
@@ -103,6 +109,8 @@ module('Unit: ember-fsm/-definition - compilation', function() {
   });
 
   test('aliases "transition" to "transitions"', function(assert) {
+    assert.expect(2);
+
     let def = create({
       events: {
         amaze: {
@@ -118,6 +126,8 @@ module('Unit: ember-fsm/-definition - compilation', function() {
 
 module('Unit: ember-fsm/-definition - Unwinding transitions', function() {
   test('$all macro', function(assert) {
+    assert.expect(8);
+
     let def = create({
       states: {
         initialState: 'a'
@@ -138,6 +148,8 @@ module('Unit: ember-fsm/-definition - Unwinding transitions', function() {
   });
 
   test('$same macro', function(assert) {
+    assert.expect(2);
+
     let def = create({
       events: {
         toA: {
@@ -156,6 +168,8 @@ module('Unit: ember-fsm/-definition - Unwinding transitions', function() {
   });
 
   test('$initial macro (replaces $initial with initial state)', function(assert) {
+    assert.expect(7);
+
     let def = create({
       states: {
         $initial: {
@@ -182,6 +196,8 @@ module('Unit: ember-fsm/-definition - Unwinding transitions', function() {
   });
 
   test('allows multiple guarded transitions with the same from state', function(assert) {
+    assert.expect(6);
+
     let def = create({
       states: { initialState: 'off' },
       events: {
@@ -199,14 +215,16 @@ module('Unit: ember-fsm/-definition - Unwinding transitions', function() {
     let t = def.transitionsFor('run', 'off');
 
     assert.strictEqual(t.length, 3);
-    assert.strictEqual(t[0].isGuarded, true);
+    assert.true(t[0].isGuarded);
     assert.strictEqual(t[0].doUnless, 'isWarm');
-    assert.strictEqual(t[1].isGuarded, true);
+    assert.true(t[1].isGuarded);
     assert.strictEqual(t[1].doIf, 'hasPower');
-    assert.strictEqual(t[2].isGuarded, false);
+    assert.false(t[2].isGuarded);
   });
 
   test('validations', function(assert) {
+    assert.expect(3);
+
     assert.throws(function() {
       create({
         states: { initialState: 'off' },
@@ -258,6 +276,8 @@ module('Unit: ember-fsm/-definition - Unwinding transitions', function() {
   });
 
   test('Unwinding transitions - tracks potential exit transitions for each state', function(assert) {
+    assert.expect(5);
+
     let def = create({
       states: { initialState: 'a' },
       events: {
@@ -281,6 +301,8 @@ module('Unit: ember-fsm/-definition - Unwinding transitions', function() {
   });
 
   test('tracks potential entry transitions for each state', function(assert) {
+    assert.expect(7);
+
     let def = create({
       states: { initialState: 'a' },
       events: {
@@ -327,6 +349,8 @@ module('Unit: ember-fsm/-definition - Unwound transitions', function() {
   });
 
   test('passes through non-array properties', function(assert) {
+    assert.expect(2);
+
     let t = build([
       { a: 'b', guard: 'hasTing' },
       { b: 'c', unless: 'hasTing' }
@@ -337,6 +361,8 @@ module('Unit: ember-fsm/-definition - Unwound transitions', function() {
   });
 
   test('allows fromStates and toState to be passed as named properties', function(assert) {
+    assert.expect(2);
+
     let t = build({ from: 'a', to: 'b' });
 
     assert.strictEqual(t[0].fromState, 'a');
@@ -345,6 +371,8 @@ module('Unit: ember-fsm/-definition - Unwound transitions', function() {
 
 
   test('allows multiple fromStates to be specified in one transition', function(assert) {
+    assert.expect(5);
+
     let t = build({ from: ['a', 'b'], to: 'c' });
 
     assert.strictEqual(t.length, 2);
@@ -379,16 +407,22 @@ module('Unit: ember-fsm/-definition - Public API', function() {
   });
 
   test('provides eventNames', function(assert) {
+    assert.expect(2);
+
     assert.strictEqual(fsmDef.eventNames.length, 3);
     assert.deepEqual(fsmDef.eventNames, ['one', 'two', 'three']);
   });
 
   test('provides events', function(assert) {
+    assert.expect(2);
+
     assert.strictEqual(fsmDef.events.length, 3);
     assert.deepEqual(fsmDef.events.map((e) => e.name), ['one', 'two', 'three']);
   });
 
   test('provides stateNames', function(assert) {
+    assert.expect(2);
+
     assert.strictEqual(fsmDef.stateNames.length, 9);
     assert.deepEqual(fsmDef.stateNames, [
       'a', 'initialized', 'b', 's1', 's1.sub1', 's1.sub2',
@@ -397,6 +431,8 @@ module('Unit: ember-fsm/-definition - Public API', function() {
   });
 
   test('provides states', function(assert) {
+    assert.expect(2);
+
     assert.strictEqual(fsmDef.states.length, 9);
     assert.deepEqual(fsmDef.states.map((s) => s.name), [
       'a', 'initialized', 'b', 's1', 's1.sub1', 's1.sub2',
@@ -447,6 +483,8 @@ module('Unit: ember-fsm/-definition - Public API', function() {
   });
 
   test('can look up transitions by event and starting state', function(assert) {
+    assert.expect(2);
+
     assert.strictEqual(fsmDef.transitionsFor('one', 'initialized').length, 1);
     assert.strictEqual(fsmDef.transitionsFor('one', 'b').length, 0);
   });

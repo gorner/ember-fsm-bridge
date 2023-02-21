@@ -1,13 +1,12 @@
 import { camelize, capitalize } from '@ember/string';
 import { Promise } from 'rsvp';
 import { typeOf } from '@ember/utils';
-import { get } from '@ember/object';
 
 export function isThenable(thing) {
   let thingType = typeOf(thing);
 
   if (thingType === 'object' || thingType === 'instance') {
-    return typeOf(get(thing, 'then')) === 'function';
+    return typeOf(thing.then) === 'function';
   } else {
     return false;
   }
@@ -60,7 +59,7 @@ export function ownPropertiesOf(object) {
   }
 
   for (property in object) {
-    if (object.hasOwnProperty(property) && object[property] !== undefined) {
+    if (Object.prototype.hasOwnProperty.call(object, property) && object[property] !== undefined) {
       properties.push(property);
     }
   }
@@ -103,3 +102,15 @@ export function bind(target, fn) {
 export function contains(array, item) {
   return array.indexOf(item) >= 0;
 }
+
+export default {
+  isThenable,
+  capitalCamelize,
+  toArray,
+  withPromise,
+  ownPropertiesOf,
+  isObject,
+  getFirst,
+  bind,
+  contains
+};

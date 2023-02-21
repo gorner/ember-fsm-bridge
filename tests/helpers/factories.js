@@ -1,6 +1,5 @@
 import { resolve } from 'rsvp';
-import { assign } from '@ember/polyfills';
-import { Machine } from 'ember-fsm';
+import { Machine } from 'ember-fsm-bridge';
 
 // https://stackoverflow.com/questions/38345937/object-assign-vs-extend
 function isObject(item) {
@@ -18,11 +17,11 @@ function deepMerge(target, ...sources) {
     for (const key in source) {
       if (isObject(source[key])) {
         if (!target[key]) {
-          assign(target, { [key]: {} });
+          Object.assign(target, { [key]: {} });
         }
         deepMerge(target[key], source[key]);
       } else {
-        assign(target, { [key]: source[key] });
+        Object.assign(target, { [key]: source[key] });
       }
     }
   }

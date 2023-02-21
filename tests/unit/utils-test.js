@@ -1,6 +1,6 @@
 import { resolve } from 'rsvp';
 import EmberObject from '@ember/object';
-import { utils } from 'ember-fsm';
+import { utils } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 const {
@@ -24,6 +24,8 @@ module('Unit: ember-fsm/-utils - isThenable', function() {
   });
 
   test('returns false for plain objects that don\'t have a .then function', function(assert) {
+    assert.expect(2);
+
     let eobj = EmberObject.create({ then: true });
     let obj  = { then: true };
     assert.notOk(isThenable(eobj));
@@ -31,6 +33,8 @@ module('Unit: ember-fsm/-utils - isThenable', function() {
   });
 
   test('returns false for everything else', function(assert) {
+    assert.expect(7);
+
     let tests = [
       null,
       undefined,
@@ -49,6 +53,8 @@ module('Unit: ember-fsm/-utils - isThenable', function() {
 
 module('Unit: ember-fsm/-utils - capitalCamelize', function() {
   test('camelizes strings and then capitalizes them', function(assert) {
+    assert.expect(4);
+
     let expectations = {
       'hello.world':   'HelloWorld',
       'zzt remixes':   'ZztRemixes',
@@ -76,6 +82,8 @@ module('Unit: ember-fsm/-utils - toArray', function() {
 
 module('Unit: ember-fsm/-utils - withPromise', function() {
   test('given a block that yields a thenable object', function(assert) {
+    assert.expect(2);
+
     let yieldedPromise;
     let done = assert.async();
 
@@ -91,6 +99,8 @@ module('Unit: ember-fsm/-utils - withPromise', function() {
   });
 
   test('given a block that yields a non-thenable value', function(assert) {
+    assert.expect(1);
+
     let yieldedValue;
     let done = assert.async();
 
@@ -105,6 +115,8 @@ module('Unit: ember-fsm/-utils - withPromise', function() {
   });
 
   test('given a block that throws an error', function(assert) {
+    assert.expect(1);
+
     let yieldedException;
     let done = assert.async();
 
@@ -121,12 +133,16 @@ module('Unit: ember-fsm/-utils - withPromise', function() {
 
 module('Unit: ember-fsm/-utils - ownPropertiesOf', function() {
   test('returns an array of properties belonging to object', function(assert) {
+    assert.expect(2);
+
     let ary = ownPropertiesOf({ one: 1, two: 2, three: 3 });
     assert.strictEqual(ary.length, 3);
     assert.deepEqual(ary, ['one', 'two', 'three']);
   });
 
   test('does not return properties belonging to prototype', function(assert) {
+    assert.expect(2);
+
     let obj = EmberObject.extend({ yo: 'hi' }).create({ cool: true });
     let ary = ownPropertiesOf(obj);
 
@@ -141,6 +157,8 @@ module('Unit: ember-fsm/-utils - ownPropertiesOf', function() {
   });
 
   test('does not return properties that are undefined', function(assert) {
+    assert.expect(2);
+
     let ary = ownPropertiesOf({ one: 1, t00: undefined, thr33: undefined });
     assert.strictEqual(ary.length, 1);
     assert.deepEqual(ary, ['one']);
@@ -149,12 +167,16 @@ module('Unit: ember-fsm/-utils - ownPropertiesOf', function() {
 
 module('Unit: ember-fsm/-utils - isObject', function() {
   test('returns true for objects', function(assert) {
+    assert.expect(3);
+
     assert.ok(isObject(EmberObject.create()));
     assert.ok(isObject({}));
     assert.ok(isObject(EmberObject.extend()));
   });
 
   test('returns false for non-objects', function(assert) {
+    assert.expect(3);
+
     assert.notOk(isObject(null));
     assert.notOk(isObject([]));
     assert.notOk(isObject(undefined));
@@ -170,6 +192,8 @@ module('Unit: ember-fsm/-utils - getFirst', function() {
 
 module('Unit: ember-fsm/-utils - bind', function() {
   test('changes the function context to the supplied target', function(assert) {
+    assert.expect(2);
+
     let x = { y: 1 };
     let fn = utils.bind(x, function() {
       this.y = 2;
@@ -185,12 +209,16 @@ module('Unit: ember-fsm/-utils - bind', function() {
 
 module('Unit: ember-fsm/-utils - contains', function() {
   test('returns true if the array contains the provided element', function(assert) {
+    assert.expect(2);
+
     let a = ['a', 'b', 'c'];
     assert.ok(utils.contains(a, 'b'));
     assert.ok(utils.contains(a, 'c'));
   });
 
   test('returns false if the array does not contain the provided element', function(assert) {
+    assert.expect(3);
+
     let a = ['a', 'b', 'c'];
     assert.notOk(utils.contains(a, 'x'));
     assert.notOk(utils.contains(a, true));

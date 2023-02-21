@@ -1,29 +1,26 @@
 import { typeOf } from '@ember/utils';
-import FSM from 'ember-fsm';
+import { Definition, Machine, Transition, Stateful, reject } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 module('Unit: ember-fsm/index', function() {
-  test('exists', function(assert) {
-    assert.strictEqual(typeOf(FSM), 'object');
-  });
 
   test('imports Definition', function(assert) {
-    assert.strictEqual(typeOf(FSM.Definition), 'function');
+    assert.strictEqual(typeOf(Definition), 'function');
   });
 
   test('imports Machine', function(assert) {
-    assert.strictEqual(typeOf(FSM.Machine), 'class');
+    assert.strictEqual(typeOf(Machine), 'class');
   });
 
   test('imports Transition', function(assert) {
-    assert.strictEqual(typeOf(FSM.Transition), 'class');
+    assert.strictEqual(typeOf(Transition), 'class');
   });
 
   test('imports Stateful', function(assert) {
-    assert.strictEqual(typeOf(FSM.Stateful), 'object');
+    assert.strictEqual(typeOf(Stateful), 'object');
   });
 
   test('imports reject', function(assert) {
-    assert.strictEqual(typeOf(FSM.reject), 'function');
+    assert.strictEqual(typeOf(reject), 'function');
   });
 });

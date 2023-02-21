@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-fsm'
+  name: require('./package').name,
 };

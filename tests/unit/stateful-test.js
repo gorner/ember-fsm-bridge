@@ -1,6 +1,6 @@
 import { next } from '@ember/runloop';
 import EmberObject from '@ember/object';
-import { Stateful } from 'ember-fsm';
+import { Stateful } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 module('Unit: ember-fsm/-stateful', function(hooks) {
@@ -36,17 +36,23 @@ module('Unit: ember-fsm/-stateful', function(hooks) {
   });
 
   test('provides fsmIsLoading', function(assert) {
-    assert.strictEqual(this.so.get('fsmIsLoading'), false);
+    assert.expect(2);
+
+    assert.false(this.so.get('fsmIsLoading'));
     this.fsm.pushActiveTransition('t0');
-    assert.strictEqual(this.so.get('fsmIsLoading'), true);
+    assert.true(this.so.get('fsmIsLoading'));
   });
 
   test('provides isIn{{State}} accessors', function(assert) {
+    assert.expect(2);
+
     assert.ok(this.so.get('isInCool'));
     assert.notOk(this.so.get('isInHerp'));
   });
 
   test('delegates sendStateEvent to fsm.send', function(assert) {
+    assert.expect(1);
+
     let done = assert.async();
 
     this.so.sendStateEvent('blerp').then(() => {
