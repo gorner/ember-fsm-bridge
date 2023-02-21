@@ -1,11 +1,11 @@
 import { next } from '@ember/runloop';
 import EmberObject from '@ember/object';
 import { resolve, reject, Promise } from 'rsvp';
-import { Machine, Transition } from 'ember-fsm';
+import { Machine, Transition } from 'ember-fsm-bridge';
 import sinon from 'sinon';
 import { module, test } from 'qunit';
 import { createMachine, createBasicMachine } from '../helpers/factories';
-import { contains } from 'ember-fsm/utils';
+import { contains } from 'ember-fsm-bridge/utils';
 import {
   startIgnoringRejections,
   stopIgnoringRejections

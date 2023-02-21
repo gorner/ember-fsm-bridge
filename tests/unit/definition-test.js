@@ -1,4 +1,4 @@
-import { Definition } from 'ember-fsm';
+import { Definition } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 function create(args) {

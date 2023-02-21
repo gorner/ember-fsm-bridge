@@ -1,7 +1,7 @@
 import { later } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import Controller from '@ember/controller';
-import FSM from 'ember-fsm';
+import { Stateful } from 'ember-fsm-bridge';
 import { action, set } from '@ember/object';
 
 const WAIT_TIMES = {
@@ -10,7 +10,7 @@ const WAIT_TIMES = {
   'green': 6500
 };
 
-export default Controller.extend(FSM.Stateful, {
+export default Controller.extend(Stateful, {
   fsmStates: null,
   fsmEvents: null,
 
@@ -97,7 +97,7 @@ export default Controller.extend(FSM.Stateful, {
   },
 
   log(level, message) {
-    this.model.get('messages').pushObject({
+    this.model.messages.pushObject({
       level: level,
       message: message,
     });

@@ -1,5 +1,5 @@
 import { resolve } from 'rsvp';
-import { Machine } from 'ember-fsm';
+import { Machine } from 'ember-fsm-bridge';
 
 // https://stackoverflow.com/questions/38345937/object-assign-vs-extend
 function isObject(item) {

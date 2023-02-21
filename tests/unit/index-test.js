@@ -1,5 +1,5 @@
 import { typeOf } from '@ember/utils';
-import { Definition, Machine, Transition, Stateful, reject } from 'ember-fsm';
+import { Definition, Machine, Transition, Stateful, reject } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 module('Unit: ember-fsm/index', function() {

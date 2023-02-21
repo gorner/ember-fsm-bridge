@@ -1,6 +1,6 @@
 import { next } from '@ember/runloop';
 import { resolve, Promise } from 'rsvp';
-import { Transition } from 'ember-fsm';
+import { Transition } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
 import { createCallbackMachine } from '../helpers/factories';

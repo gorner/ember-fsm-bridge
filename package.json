@@ -1,10 +1,10 @@
 {
-  "name": "ember-fsm",
+  "name": "ember-fsm-bridge",
   "version": "2.0.0-alpha.0",
   "description": "A promise-aware finite state machine implementation for Ember objects",
-  "homepage": "https://github.com/heycarsten/ember-fsm",
+  "homepage": "https://github.com/gorner/ember-fsm-bridge",
   "bugs": {
-    "url": "https://github.com/heycarsten/ember-fsm/issues"
+    "url": "https://github.com/gorner/ember-fsm-bridge/issues"
   },
   "scripts": {
     "build": "ember build --environment=production",
@@ -31,10 +31,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/heycarsten/ember-fsm.git"
+    "url": "https://github.com/gorner/ember-fsm.git"
   },
   "license": "MIT",
   "author": "Carsten Nielsen <heycarsten@gmail.com>",
+  "contributors": [
+    "Joshua Gorner"
+  ],
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -45,6 +48,7 @@
     "ember-copy": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "^2.9.3",

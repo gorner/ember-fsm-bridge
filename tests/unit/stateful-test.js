@@ -1,6 +1,6 @@
 import { next } from '@ember/runloop';
 import EmberObject from '@ember/object';
-import { Stateful } from 'ember-fsm';
+import { Stateful } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 module('Unit: ember-fsm/-stateful', function(hooks) {

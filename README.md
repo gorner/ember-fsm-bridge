@@ -1,25 +1,33 @@
-# Ember FSM
+# Ember FSM Bridge
 
 :warning: :warning: :warning:
 
-**Maintenance Mode**
+**This addon is primarily intended as a short-term "bridge" replacement for existing users of `ember-fsm` that need to upgrade to Ember 4.x. Use is _strongly discouraged_ for new apps.**
 
-This addon was developed from 2014 to 2018 by
-[Carsten Nielsen](https://www.dignitymemorial.com/obituaries/dundas-on/carsten-nielsen-8730324)
-and was minimally updated in 2023 by the team at @Crowdmark in order to
-ensure compatibility with Ember Octane / 4.x. To comply with SemVer
-best practices we've bumped the major version to 2.x but there are
-no other changes to the feature set.
+The [`ember-fsm` addon](https://github.com/heycarsten/ember-fsm) was originally developed from 2014 to 2018,
+when it was put into maintenance mode, by
+[Carsten Nielsen](https://www.dignitymemorial.com/obituaries/dundas-on/carsten-nielsen-8730324).
 
-We do not intend to add any new features and can't make
-any guarantees about future maintenance.
+This fork has been minimally updated in order to ensure compatibility
+with Ember Octane / 4.x for an app that still uses it.
+As this is effectively a continuation of `ember-fsm`, to comply with SemVer
+best practices, I've set a major version of 2.x,
+but there are no other changes to the feature set.
+
+I do not intend to add any new features and can't make
+any guarantees about future maintenance, as the app in question
+will likely eventually remove its dependency on this addon, and
+the library depends on older Ember concepts like mixins that are now
+[discouraged](https://github.com/ember-cli/eslint-plugin-ember/blob/master/docs/rules/no-new-mixins.md).
+Some of the examples below also use outdated syntax.
 If you think the Ember community still needs a library
-like this with newer/better features, please feel free to
-fork it and develop it further.
+like this with newer/better features or different architecture,
+please feel free to fork it and develop it further.
 
-We can only recommend this version for use with Ember 3.28+ and
+I can only recommend this version for use with Ember 3.28+ and
 Node 14, 16, or 18+. If you need a version compatible with earlier
-versions of Ember, we recommend version 1.1.0.
+versions of Ember, you should stick with the
+[original addon](https://github.com/heycarsten/ember-fsm).
 
 :warning: :warning: :warning:
 
@@ -28,9 +36,9 @@ versions of Ember, we recommend version 1.1.0.
 [A wild (and current) traffic light demo appears!](https://ember-twiddle.com/7136a752d42aee13c1072c96480494f4)
 
 ```js
-import FSM from 'ember-fsm';
+import { Machine } from 'ember-fsm-bridge';
 
-let trafficSignal = FSM.Machine.create({
+let trafficSignal = Machine.create({
   events: {
     cycle: {
       transitions: [
@@ -74,9 +82,9 @@ Try really hard not to need it, if you need it, I'm sorry. -- @heycarsten
 ### Defining a State Machine
 
 ```js
-import FSM from 'ember-fsm';
+import { Machine } from 'ember-fsm-bridge';
 
-let SleepyFSM = FSM.Machine.extend({
+let SleepyFSM = Machine.extend({
   // Here is where you define your state machine's state-specific configuration.
   // This section is optional.
   states: {
@@ -227,11 +235,11 @@ of how adding `ember-fsm` to a controller can remove a lot of the
 tedious parts of workflow managment:
 
 ```js
-import Ember from 'ember';
-import FSM from 'ember-fsm';
+import Controller from '@ember/controller';
+import { Stateful, reject } from 'ember-fsm-bridge';
 
 // controllers/upload.js
-export default Ember.Controller.extend(FSM.Stateful, {
+export default Controller.extend(Stateful, {
   needs: 'notifier',
 
   actions: {
@@ -280,7 +288,7 @@ export default Ember.Controller.extend(FSM.Stateful, {
       return;
     } else {
       this.get('controllers.notifier').warn('file must have content');
-      FSM.reject(); // A helper for throwing an error
+      reject(); // A helper for throwing an error
     }
   },
 
@@ -327,6 +335,8 @@ export default Ember.Controller.extend(FSM.Stateful, {
 * Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
 ## Thanks
+
+_From @heycarsten in the original ember-fsm:_
 
 - [@catz](https://github.com/catz) for updating the addon to work with Ember 3.3+
 - [@hhff](https://github.com/hhff) for the continued support and feedback

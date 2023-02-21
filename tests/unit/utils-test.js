@@ -1,6 +1,6 @@
 import { resolve } from 'rsvp';
 import EmberObject from '@ember/object';
-import { utils } from 'ember-fsm';
+import { utils } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 const {

@@ -1,4 +1,4 @@
-import { reject } from 'ember-fsm';
+import { reject } from 'ember-fsm-bridge';
 import { module, test } from 'qunit';
 
 module('Unit: ember-fsm/-reject', function() {
