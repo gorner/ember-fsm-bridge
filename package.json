@@ -1,6 +1,6 @@
 {
   "name": "ember-fsm-bridge",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "description": "An Octane-compatible fork of ember-fsm",
   "homepage": "https://github.com/gorner/ember-fsm-bridge",
   "bugs": {
