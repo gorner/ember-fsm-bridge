@@ -1,4 +1,3 @@
-import EmberError from '@ember/error';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
 import { typeOf } from '@ember/utils';
@@ -49,7 +48,7 @@ export default EmberObject.extend({
     let sameState;
 
     if (!contains(this.eventNames, event)) {
-      throw new EmberError(
+      throw new Error(
         `unknown state event "${event}" try one of [` +
         this.eventNames.join(', ') + ']'
       );
@@ -59,7 +58,7 @@ export default EmberObject.extend({
     sameState  = transition.toState === this.currentState;
 
     if (this.isTransitioning && !sameState) {
-      throw new EmberError(
+      throw new Error(
         `unable to transition out of "${this.currentState}" ` +
         `state to "${transition.toState}" state while transitions are ` +
         `active: ${inspect(this.activeTransitions)}`
@@ -182,14 +181,14 @@ export default EmberObject.extend({
     let transitionParams;
 
     if (!potentials.length) {
-      throw new EmberError(`no transition is defined for event "${event}" ` +
+      throw new Error(`no transition is defined for event "${event}" ` +
       `in state "${currentState}"`);
     }
 
     transitionParams = this.outcomeOfPotentialTransitions(potentials);
 
     if (!transitionParams) {
-      throw new EmberError('no unguarded transition was resolved for event ' +
+      throw new Error('no unguarded transition was resolved for event ' +
       `"${event}" in state "${currentState}"`);
     }
 

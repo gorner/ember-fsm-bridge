@@ -2,6 +2,12 @@
 
 ## ember-fsm-bridge
 
+### 2.0.0-alpha.1
+
+- Replace `@ember/error` with standard browser `Error` due to
+  [deprecation](https://deprecations.emberjs.com/v4.x#toc_deprecate-ember-error)
+  in Ember 4.x.
+
 ### 2.0.0-alpha.0
 
 - [BREAKING] Package forked as `ember-fsm-bridge`.

@@ -1,5 +1,3 @@
-import EmberError from '@ember/error';
-
 export function reject() {
-  throw new EmberError('rejected transition');
+  throw new Error('rejected transition');
 }
